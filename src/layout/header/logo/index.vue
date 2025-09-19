@@ -65,16 +65,20 @@ watch(
         },
       ]"
     >
-      <div class="size-10">
-        <Logo />
-      </div>
       <div
+        v-if="!sidebarMenu.collapsed"
         class="flex flex-1 overflow-hidden transition-[margin-left,max-width]"
-        :class="sidebarMenu.collapsed ? 'ml-0 max-w-0' : 'ml-4 max-w-44'"
+        :class="sidebarMenu.collapsed ? 'ml-0 max-w-0' : 'ml-4 max-w-45'"
       >
         <h1 class="shrink-0 text-xl">
           {{ APP_NAME }}
         </h1>
+      </div>
+      <div
+        v-else
+        class="size-10"
+      >
+        <Logo />
       </div>
     </div>
   </div>

@@ -53,7 +53,7 @@ export const DEFAULT_PREFERENCES_OPTIONS = {
   enableTextSelect: true,
   watermarkOptions: {
     content: 'Watermark',
-    fontColor: '#D81E1E96',
+    fontColor: '#2B7FFFFF',
     fontSize: 16,
     width: 384,
     height: 384,
@@ -76,7 +76,7 @@ export const DEFAULT_PREFERENCES_OPTIONS = {
   noiseOpacity: 0.02,
 } as const
 
-const DEFAULT_THEME_COLOR = '#8e51ff'
+const DEFAULT_THEME_COLOR = '#2B7FFF'
 
 export const usePreferencesStore = defineStore('preferencesStore', () => {
   const preferences = useStorage<PreferencesOptions>('preferences', DEFAULT_PREFERENCES_OPTIONS)

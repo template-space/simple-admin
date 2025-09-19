@@ -1,5 +1,5 @@
 {
-  "name": "lithe-admin",
+  "name": "bird-monitoring-platform",
   "version": "0.0.14",
   "private": true,
   "type": "module",
@@ -20,6 +20,7 @@
     "format:fix": "prettier --write src/"
   },
   "dependencies": {
+    "@vitejs/plugin-basic-ssl": "^2.1.0",
     "@vueuse/core": "^13.6.0",
     "chroma-js": "^3.1.2",
     "echarts": "^5.6.0",
@@ -60,5 +61,6 @@
     "vite-plugin-vue-devtools": "^8.0.0",
     "vitest": "^3.2.4",
     "vue-tsc": "^3.0.4"
-  }
+  },
+  "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
 }

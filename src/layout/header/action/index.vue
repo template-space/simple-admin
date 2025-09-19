@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { defineAsyncComponent, h } from 'vue'
 
-import { ButtonAnimation } from '@/components'
+// import { ButtonAnimation } from '@/components'
 import { useInjection } from '@/composables'
 import { mediaQueryInjectionKey } from '@/injection'
 import { toRefsPreferencesStore } from '@/stores'
 
 import FullScreen from './FullScreen.vue'
-import PreferencesDrawer from './PreferencesDrawer.vue'
+// import PreferencesDrawer from './PreferencesDrawer.vue'
 import SignOut from './SignOut.vue'
 import ThemeModePopover from './ThemeModePopover.vue'
 defineOptions({
@@ -25,17 +25,9 @@ const { navigationMode } = toRefsPreferencesStore()
 </script>
 <template>
   <div class="flex items-center">
-    <ButtonAnimation
-      :animation="false"
-      tag="a"
-      href="https://github.com/tenianon/lithe-admin"
-      target="_blank"
-    >
-      <span class="iconify-[mdi--github]" />
-    </ButtonAnimation>
     <FullScreen />
     <ThemeModePopover />
-    <PreferencesDrawer />
+    <!-- <PreferencesDrawer /> -->
     <SignOut />
     <AsyncAvatarDropdown v-if="!isMaxSm && navigationMode === 'horizontal'" />
   </div>

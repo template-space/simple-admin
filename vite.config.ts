@@ -1,6 +1,7 @@
 import { fileURLToPath, URL } from 'node:url'
 
 import tailwindcss from '@tailwindcss/vite'
+import basicSsl from '@vitejs/plugin-basic-ssl'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { defineConfig } from 'vite'
@@ -9,7 +10,7 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig((env) => {
   return {
-    plugins: [vue(), vueJsx(), tailwindcss()],
+    plugins: [vue(), vueJsx(), tailwindcss(), basicSsl()],
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),

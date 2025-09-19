@@ -2,7 +2,7 @@
 import { watchDebounced } from '@vueuse/core'
 import chroma from 'chroma-js'
 import * as echarts from 'echarts'
-import { NNumberAnimation } from 'naive-ui'
+import { NNumberAnimation, NTag } from 'naive-ui'
 import { onMounted, watch, ref, computed, onUnmounted } from 'vue'
 
 import { ScrollContainer } from '@/components'
@@ -17,7 +17,25 @@ defineOptions({
 
 const { sidebarMenu, navigationMode, themeColor, isDark } = toRefsPreferencesStore()
 
-const cardList = ref(generateCardData())
+const cardList = ref([
+  {
+    title: '今日告警',
+    value: 23,
+    suffix: '个',
+    iconClass: 'iconify ph--users-bold text-indigo-50 dark:text-indigo-150',
+    iconBgClass:
+      'text-indigo-500/5 bg-indigo-400 ring-4 ring-indigo-200 dark:bg-indigo-650 dark:ring-indigo-500/30 transition-all',
+  },
+  {
+    title: '数据更新频率',
+    value: 2,
+    suffix: '分钟',
+    description: '上次更新: 10:42:15',
+    iconClass: 'iconify ph--eye-bold text-blue-50 dark:text-blue-150',
+    iconBgClass:
+      'text-blue-500/5 bg-blue-400 ring-4 ring-blue-200 dark:bg-blue-650 dark:ring-blue-500/30 transition-all',
+  },
+])
 
 const revenueChart = ref<HTMLDivElement | null>(null)
 let revenueChartInstance: ECharts | null = null
@@ -79,61 +97,6 @@ const revenueChartSelected = ref<Record<string, boolean>>(
 )
 
 const highestChartSelected = ref<'max' | 'min'>('max')
-
-function generateCardData() {
-  const now = new Date()
-  const currentMonth = now.getMonth() + 1
-
-  const baseUserCount = 10000 + Math.floor(Math.random() * 5000)
-  const todayVisits = Math.floor(
-    5000 + Math.random() * 8000 + Math.sin((now.getHours() / 24) * Math.PI) * 2000,
-  )
-  const monthlySales = Math.floor(1500000 + Math.random() * 1000000 + (currentMonth / 12) * 500000)
-  const pendingOrders = Math.floor(150 + Math.random() * 200)
-
-  return [
-    {
-      title: '用户总数',
-      value: baseUserCount,
-      percentage: parseFloat((3.2 + Math.random() * 4).toFixed(2)),
-      iconClass: 'iconify ph--users-bold text-indigo-50 dark:text-indigo-150',
-      iconBgClass:
-        'text-indigo-500/5 bg-indigo-400 ring-4 ring-indigo-200 dark:bg-indigo-650 dark:ring-indigo-500/30 transition-all',
-      precision: 0,
-      description: `${currentMonth}月新增 ${Math.floor(100 + Math.random() * 200)} 人`,
-    },
-    {
-      title: '今日访问',
-      value: todayVisits,
-      percentage: parseFloat((-2 + Math.random() * 20).toFixed(2)),
-      iconClass: 'iconify ph--eye-bold text-blue-50 dark:text-blue-150',
-      iconBgClass:
-        'text-blue-500/5 bg-blue-400 ring-4 ring-blue-200 dark:bg-blue-650 dark:ring-blue-500/30 transition-all',
-      precision: 0,
-      description: '较昨日变化',
-    },
-    {
-      title: `${currentMonth}月销售额`,
-      value: monthlySales,
-      percentage: parseFloat((5 + Math.random() * 10).toFixed(2)),
-      iconClass: 'iconify ph--currency-dollar-bold text-emerald-50 dark:text-emerald-150',
-      iconBgClass:
-        'text-emerald-500/5 bg-emerald-400 ring-4 ring-emerald-200 dark:bg-emerald-650 dark:ring-emerald-500/30 transition-all',
-      precision: 2,
-      description: '本月累计收入',
-    },
-    {
-      title: '待处理订单',
-      value: pendingOrders,
-      percentage: parseFloat((-8 + Math.random() * 6).toFixed(2)),
-      iconClass: 'iconify ph--shopping-cart-bold text-orange-50 dark:text-orange-150',
-      iconBgClass:
-        'text-orange-500/5 bg-orange-400 ring-4 ring-orange-200 dark:bg-orange-650 dark:ring-orange-500/30 transition-all',
-      precision: 0,
-      description: '需要及时处理',
-    },
-  ]
-}
 
 const generateRandomData = (
   baseMin: number,
@@ -1109,44 +1072,53 @@ watch([isDark, themeColor], () => {
 </script>
 <template>
   <ScrollContainer wrapper-class="flex flex-col gap-y-4 max-sm:gap-y-2">
-    <div class="grid grid-cols-1 gap-4 max-sm:gap-2 md:grid-cols-2 lg:grid-cols-4">
+    <div class="grid grid-cols-1 gap-4 max-sm:gap-2 md:grid-cols-2 lg:grid-cols-2">
       <div
-        v-for="{
-          title,
-          value,
-          precision,
-          percentage,
-          description,
-          iconBgClass,
-          iconClass,
-        } in cardList"
+        v-for="{ title, value, iconBgClass, iconClass, suffix, description } in cardList"
         :key="title"
         class="flex items-center justify-between gap-x-4 overflow-hidden rounded bg-naive-card p-6 shadow-xs transition-[background-color]"
       >
         <div class="flex-1">
           <span class="text-sm font-medium text-neutral-450">{{ title }}</span>
-          <div class="mt-1 mb-1.5 flex gap-x-4 text-2xl text-neutral-700 dark:text-neutral-400">
+          <div class="mt-1 mb-1.5 flex gap-x-4 text-2xl items-center text-neutral-700 dark:text-neutral-400">
             <NNumberAnimation
               :to="value"
               show-separator
-              :precision="precision"
             />
+            <span class="text-lg text-neutral-500 dark:text-neutral-400">{{ suffix }}</span>
           </div>
           <div class="flex items-center">
-            <div
-              class="flex items-center gap-x-0.5 rounded-xs px-1.5 py-0.5 text-xs transition-[background-color,color]"
-              :class="
-                percentage > 0
-                  ? 'bg-green-100 text-green-600 dark:bg-green-500/20 dark:text-green-400'
-                  : 'bg-rose-100 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400'
-              "
+            <span
+              v-if="description"
+              class="text-neutral-500 dark:text-neutral-400"
+              >{{ description }}</span
             >
-              <span
-                :class="percentage > 0 ? 'iconify ph--arrow-up' : 'iconify ph--arrow-down'"
-              ></span>
-              <span class="font-medium">{{ Math.abs(percentage) }}%</span>
+            <div
+              v-else
+              class="flex items-center gap-x-1 rounded-xs text-xs transition-[background-color,color]"
+            >
+              <NTag
+                type="error"
+                size="small"
+                round
+              >
+                高: 8
+              </NTag>
+              <NTag
+                type="warning"
+                size="small"
+                round
+              >
+                中: 12
+              </NTag>
+              <NTag
+                type="info"
+                size="small"
+                round
+              >
+                低: 3
+              </NTag>
             </div>
-            <span class="ml-2 text-neutral-500 dark:text-neutral-400">{{ description }}</span>
           </div>
         </div>
         <div>

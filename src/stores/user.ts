@@ -17,12 +17,14 @@ interface User {
   id?: string
   name?: string
   role?: 'admin' | 'user'
+  description?: string
 }
 
 const DEFAULT_USER: User = {
   avatar: '',
+  description: '机场安全监控',
   id: '2000',
-  name: 'Lithe User',
+  name: 'admin',
   role: 'admin',
 }
 
@@ -59,6 +61,7 @@ export const useUserStore = defineStore('userStore', () => {
     })
 
     token.value = null
+    user.value = null
 
     if (router.hasRoute('layout')) {
       router.removeRoute('layout')
